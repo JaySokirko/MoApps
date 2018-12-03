@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">MoAppsTest</string>
+    <string name="sign_in_with_social_account">Sign in with social account</string>
+    <string name="or">-or-</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="information">INFORMATION</string>
+    <string name="sign_in">sign in</string>
+    <string name="please_wait">Please wait</string>
+    <string name="no_user">Неверный пароль или логин</string>
+    <string name="enter_email">Please, enter your e-mail</string>
+    <string name="enter_password">Please, enter your password</string>
+    <string name="no_internet_massage">No internet connection</string>
+    <string name="settings">settings</string>
+    <string name="cancel">cancel</string>
+    <string name="incomplete">Incomplete</string>
+    <string name="complete">Complete</string>
+    <string name="not_paid">Not paid</string>
+    <string name="paid">Paid</string>
+    <string name="logout">Sing Out</string>
+    <string name="paid_to">Paid to: </string>
+    <string name="ok">ok</string>
+    <string name="info">Предпросмотр приложений, созданных с помощю конструктора MO APPS.\n
+        Для входа введите логин и пароль от личного кабинета на сайте mo-apps.com</string>
+</resources>
