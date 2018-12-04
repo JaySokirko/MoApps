@@ -17,7 +17,7 @@ public class LauncherActivity extends AppCompatActivity {
                 .getBoolean("signIn",false);
 
         if (isSignedIn){
-
+            
             startActivity(new Intent(LauncherActivity.this, MainActivity.class));
             finish();
 
