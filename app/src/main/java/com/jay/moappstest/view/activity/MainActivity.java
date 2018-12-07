@@ -58,29 +58,24 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        userToken = getSharedPreferences("Settings",MODE_PRIVATE)
+        userToken = getSharedPreferences("Settings", MODE_PRIVATE)
                 .getString("userToken", "");
+
+        getSharedPreferences("Settings", MODE_PRIVATE).edit()
+                .putBoolean("signIn", true).apply();
 
         getAppsList(userToken);
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        getSharedPreferences("Settings", MODE_PRIVATE).edit()
-                .putBoolean("signIn",true).apply();
-    }
-
-    private void setUpProgressDialog(){
+    private void setUpProgressDialog() {
 
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setTitle(getResources().getString(R.string.please_wait));
         progressDialog.show();
     }
 
-    private void setUpRecyclerView(){
+    private void setUpRecyclerView() {
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -104,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             case R.id.log_out:
 
                 getSharedPreferences("Settings", MODE_PRIVATE).edit()
-                        .putBoolean("signIn",false).apply();
+                        .putBoolean("signIn", false).apply();
 
                 startActivity(new Intent(this, SignInActivity.class));
                 finish();
@@ -172,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
     }
-
 
 
     @Override

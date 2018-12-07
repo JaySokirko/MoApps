@@ -13,18 +13,19 @@ public class LauncherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
+        //Check if the user is signed in.
         boolean isSignedIn = getSharedPreferences("Settings", MODE_PRIVATE)
                 .getBoolean("signIn",false);
 
         if (isSignedIn){
 
-            startActivity(new Intent(LauncherActivity.this, MainActivity.class)
-            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+
             finish();
 
         } else {
-            startActivity(new Intent(LauncherActivity.this, SignInActivity.class)
-                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            startActivity(new Intent(LauncherActivity.this, SignInActivity.class));
+
             finish();
         }
     }

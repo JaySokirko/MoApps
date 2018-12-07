@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.jay.moappstest.R;
 
-public class InformationalDialog extends Dialog implements android.view.View.OnClickListener{
+public class InformationalDialog extends Dialog implements android.view.View.OnClickListener {
 
 
     public InformationalDialog(@NonNull Context context) {
@@ -22,7 +22,7 @@ public class InformationalDialog extends Dialog implements android.view.View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diaolog_information);
 
-        Button buttonDismiss = findViewById(R.id.ok_button);
+        Button buttonDismiss = findViewById(R.id.dismiss_button);
         buttonDismiss.setOnClickListener(this);
     }
 
@@ -30,9 +30,9 @@ public class InformationalDialog extends Dialog implements android.view.View.OnC
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
 
-            case R.id.ok_button:
+            case R.id.dismiss_button:
                 dismiss();
                 break;
         }
