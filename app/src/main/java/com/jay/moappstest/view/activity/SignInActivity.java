@@ -11,21 +11,25 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jay.moappstest.R;
-import com.jay.moappstest.api.ApiClient;
 import com.jay.moappstest.api.ApiService;
+import com.jay.moappstest.di.MyApplication;
 import com.jay.moappstest.model.request.UserTokenRequest;
 import com.jay.moappstest.model.response.UserTokenResponse;
 import com.jay.moappstest.utils.InternetCinnection;
 import com.jay.moappstest.view.dialog.InformationalDialog;
 import com.jay.moappstest.view.dialog.NoInternetConnectionDialog;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private ApiService apiService;
+    @Inject
+    Retrofit retrofit;
 
     private EditText emailET;
     private EditText passwordET;
@@ -48,7 +52,7 @@ public class SignInActivity extends AppCompatActivity {
         onEditEmailListener();
         onEditPasswordListener();
 
-        apiService = ApiClient.getClient().create(ApiService.class);
+        ((MyApplication) getApplication()).getNetComponent().injectSignInActivity(SignInActivity.this);
     }
 
 
@@ -79,6 +83,7 @@ public class SignInActivity extends AppCompatActivity {
             if (InternetCinnection.isOnline(SignInActivity.this)) {
 
                 //if the internet enabled get current user token
+                progressDialog.show();
                 getUserToken(userNick, password);
             } else {
 
@@ -86,8 +91,6 @@ public class SignInActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 NoInternetConnectionDialog.buildDialog(SignInActivity.this);
             }
-
-            progressDialog.show();
         }
     }
 
@@ -95,10 +98,10 @@ public class SignInActivity extends AppCompatActivity {
     /**
      * @param view informational button
      */
-    public void onInformationClick(View view){
+    public void onInformationClick(View view) {
 
-       InformationalDialog dialog = new InformationalDialog(SignInActivity.this);
-       dialog.show();
+        InformationalDialog dialog = new InformationalDialog(SignInActivity.this);
+        dialog.show();
     }
 
 
@@ -107,6 +110,8 @@ public class SignInActivity extends AppCompatActivity {
         UserTokenRequest user = new UserTokenRequest();
         user.setUserNick(userNick);
         user.setPassword(password);
+
+        ApiService apiService = retrofit.create(ApiService.class);
 
         Call<UserTokenResponse> call = apiService.getUser(user);
         call.enqueue(new Callback<UserTokenResponse>() {
@@ -122,7 +127,7 @@ public class SignInActivity extends AppCompatActivity {
                 } else {
 
                     getSharedPreferences("Settings", MODE_PRIVATE).edit()
-                            .putString("userToken",token).apply();
+                            .putString("userToken", token).apply();
 
                     startActivity(new Intent(SignInActivity.this, MainActivity.class));
 
@@ -141,17 +146,18 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-
     @SuppressLint("ClickableViewAccessibility")
-    private void onEditEmailListener(){
+    private void onEditEmailListener() {
 
         emailET.setOnTouchListener((v, event) -> {
 
             if (event.getAction() == MotionEvent.ACTION_UP) {
 
+                //disable the error in the input field
                 emailET.setBackground(getResources()
                         .getDrawable(R.drawable.rounded_view_semi_transparent));
 
+                //delete input text button click
                 if (event.getRawX() >= (emailET.getRight() -
                         emailET.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
 
@@ -186,4 +192,5 @@ public class SignInActivity extends AppCompatActivity {
             return false;
         });
     }
+
 }

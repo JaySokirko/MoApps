@@ -8,15 +8,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.jay.moappstest.R;
 import com.jay.moappstest.adapter.AppsListAdapter;
-import com.jay.moappstest.api.ApiClient;
 import com.jay.moappstest.api.ApiService;
+import com.jay.moappstest.di.MyApplication;
 import com.jay.moappstest.model.request.AppsListRequest;
 import com.jay.moappstest.model.response.AppsList;
 import com.jay.moappstest.model.response.AppsListResponse;
@@ -24,14 +23,18 @@ import com.jay.moappstest.model.response.AppsListResponse;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
         AppsListAdapter.OnItemClickListener {
 
-    private ApiService apiService;
+    @Inject
+    Retrofit retrofit;
 
     private AppsListAdapter appsListAdapter;
     private SwipeRefreshLayout refreshLayout;
@@ -50,13 +53,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ((MyApplication) getApplication()).getNetComponent().injectMainActivity(MainActivity.this);
+
         setUpRecyclerView();
 
         setUpSwipeRefreshLayout();
 
         setUpProgressDialog();
-
-        apiService = ApiClient.getClient().create(ApiService.class);
 
         userToken = getSharedPreferences("Settings", MODE_PRIVATE)
                 .getString("userToken", "");
@@ -139,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         userApps.setSkip(0);
         userApps.setTake(1000);
         userApps.setUserToken(userToken);
+
+        ApiService apiService = retrofit.create(ApiService.class);
 
         Call<AppsListResponse> call = apiService.getUserApps(userApps);
         call.enqueue(new Callback<AppsListResponse>() {

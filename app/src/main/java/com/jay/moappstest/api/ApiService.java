@@ -1,13 +1,14 @@
 package com.jay.moappstest.api;
 
+import com.jay.moappstest.model.request.AppsListRequest;
 import com.jay.moappstest.model.request.UserTokenRequest;
 import com.jay.moappstest.model.response.AppsListResponse;
 import com.jay.moappstest.model.response.UserTokenResponse;
-import com.jay.moappstest.model.request.AppsListRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+
 
 public interface ApiService {
 
