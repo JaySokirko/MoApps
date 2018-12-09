@@ -79,6 +79,7 @@ public class SignInActivity extends AppCompatActivity {
             if (InternetCinnection.isOnline(SignInActivity.this)) {
 
                 //if the internet enabled get current user token
+                 progressDialog.show();
                 getUserToken(userNick, password);
             } else {
 
@@ -86,8 +87,6 @@ public class SignInActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 NoInternetConnectionDialog.buildDialog(SignInActivity.this);
             }
-
-            progressDialog.show();
         }
     }
 
