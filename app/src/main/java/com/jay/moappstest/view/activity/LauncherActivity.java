@@ -18,13 +18,11 @@ public class LauncherActivity extends AppCompatActivity {
 
         if (isSignedIn){
 
-            startActivity(new Intent(LauncherActivity.this, MainActivity.class)
-            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            startActivity(new Intent(LauncherActivity.this, MainActivity.class));
             finish();
 
         } else {
-            startActivity(new Intent(LauncherActivity.this, SignInActivity.class)
-                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            startActivity(new Intent(LauncherActivity.this, SignInActivity.class));
             finish();
         }
     }
