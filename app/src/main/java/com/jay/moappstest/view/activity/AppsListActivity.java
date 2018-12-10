@@ -8,12 +8,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.jay.moappstest.R;
 import com.jay.moappstest.adapter.AppsListAdapter;
+import com.jay.moappstest.api.ApiClient;
 import com.jay.moappstest.api.ApiService;
 import com.jay.moappstest.di.MyApplication;
 import com.jay.moappstest.model.request.AppsListRequest;
@@ -30,7 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
+public class AppsListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
         AppsListAdapter.OnItemClickListener {
 
     @Inject
@@ -47,13 +49,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private ArrayList<String> appUrlList = new ArrayList<>();
 
     private String userToken;
+    private String TAG = "LOG_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ((MyApplication) getApplication()).getNetComponent().injectMainActivity(MainActivity.this);
 
         setUpRecyclerView();
 
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private void setUpProgressDialog() {
 
-        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog = new ProgressDialog(AppsListActivity.this);
         progressDialog.setTitle(getResources().getString(R.string.please_wait));
         progressDialog.show();
     }
@@ -81,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void setUpRecyclerView() {
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        appsListAdapter = new AppsListAdapter(MainActivity.this, appImages, appNames,
+        recyclerView.setLayoutManager(new LinearLayoutManager(AppsListActivity.this));
+        appsListAdapter = new AppsListAdapter(AppsListActivity.this, appImages, appNames,
                 isPaidList, isCompleteList, this);
         recyclerView.setAdapter(appsListAdapter);
     }
@@ -143,12 +144,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         userApps.setTake(1000);
         userApps.setUserToken(userToken);
 
-        ApiService apiService = retrofit.create(ApiService.class);
+        Log.d(TAG, "getAppsList: " + userToken);
+
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
 
         Call<AppsListResponse> call = apiService.getUserApps(userApps);
         call.enqueue(new Callback<AppsListResponse>() {
             @Override
             public void onResponse(Call<AppsListResponse> call, Response<AppsListResponse> response) {
+
+                Log.d(TAG, "onResponse: " + response.body());
 
                 for (AppsList appsList : response.body().getData()) {
 
@@ -167,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void onFailure(Call<AppsListResponse> call, Throwable t) {
 
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(AppsListActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
             }
         });

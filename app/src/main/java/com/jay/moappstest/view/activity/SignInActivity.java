@@ -1,196 +1,117 @@
 package com.jay.moappstest.view.activity;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
-import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jay.moappstest.R;
-import com.jay.moappstest.api.ApiService;
-import com.jay.moappstest.di.MyApplication;
-import com.jay.moappstest.model.request.UserTokenRequest;
-import com.jay.moappstest.model.response.UserTokenResponse;
-import com.jay.moappstest.utils.InternetCinnection;
-import com.jay.moappstest.view.dialog.InformationalDialog;
-import com.jay.moappstest.view.dialog.NoInternetConnectionDialog;
+import com.jay.moappstest.SignInContract;
+import com.jay.moappstest.presenter.SignInPresenter;
 
-import javax.inject.Inject;
+public class SignInActivity extends AppCompatActivity implements SignInContract.View{
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+    private SignInPresenter presenter;
 
-public class SignInActivity extends AppCompatActivity {
+    private EditText emailEditText;
+    private EditText passwordEditText;
 
-    @Inject
-    Retrofit retrofit;
-
-    private EditText emailET;
-    private EditText passwordET;
+    private Button loginButton;
+    private Button infoButton;
 
     private ProgressDialog progressDialog;
 
-    private final int DRAWABLE_RIGHT = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in_actiity);
+        setContentView(R.layout.activity_sign_in);
 
-        emailET = findViewById(R.id.email);
-        passwordET = findViewById(R.id.password);
+        emailEditText = findViewById(R.id.email);
+        passwordEditText = findViewById(R.id.password);
+        loginButton = findViewById(R.id.sign_in);
+        infoButton = findViewById(R.id.information);
 
-        progressDialog = new ProgressDialog(SignInActivity.this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(getResources().getString(R.string.please_wait));
 
-        onEditEmailListener();
-        onEditPasswordListener();
+        presenter = new SignInPresenter(this);
 
-        ((MyApplication) getApplication()).getNetComponent().injectSignInActivity(SignInActivity.this);
+        onLoginBtnClickListener();
+
+        onInfoBtnClickListener();
+    }
+
+    private void onLoginBtnClickListener() {
+
+        loginButton.setOnClickListener(v -> {
+
+            String email = emailEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
+
+            presenter.onSignInClick(email, password);
+        });
     }
 
 
-    /**
-     * @param view sign in button
-     */
-    public void onSignInClick(View view) {
+    private void onInfoBtnClickListener() {
 
-        if (emailET.getText().toString().isEmpty()) {
+        infoButton.setOnClickListener(v -> {
+            //todo show dialog
+        });
+    }
 
-            emailET.setBackground(getResources().getDrawable(R.drawable.rounded_view_red));
+    @Override
+    public void showProgress() {
+        progressDialog.show();
+    }
 
-            Toast.makeText(SignInActivity.this,
-                    getResources().getString(R.string.enter_email), Toast.LENGTH_LONG).show();
+    @Override
+    public void hideProgress() {
+        progressDialog.dismiss();
+    }
 
-        } else if (passwordET.getText().toString().isEmpty()) {
+    @Override
+    public void onEmailError() {
+        //todo set background for email
+    }
 
-            passwordET.setBackground(getResources().getDrawable(R.drawable.rounded_view_red));
+    @Override
+    public void onPasswordError() {
+        //todo set background for password
+    }
 
-            Toast.makeText(SignInActivity.this,
-                    getResources().getString(R.string.enter_password), Toast.LENGTH_LONG).show();
+    @Override
+    public void onSuccessResponse(String token) {
+
+        if (token == null){
+
+            Toast.makeText(this, getResources().getString(R.string.no_user), Toast.LENGTH_LONG)
+                    .show();
         } else {
 
-            String userNick = emailET.getText().toString();
-            String password = passwordET.getText().toString();
+            getSharedPreferences("Settings", MODE_PRIVATE).edit()
+                    .putString("userToken",token).apply();
 
-            //Check the internet connection
-            if (InternetCinnection.isOnline(SignInActivity.this)) {
-
-                //if the internet enabled get current user token
-                progressDialog.show();
-                getUserToken(userNick, password);
-            } else {
-
-                //Show the dialog to open the settings.
-                progressDialog.dismiss();
-                NoInternetConnectionDialog.buildDialog(SignInActivity.this);
-            }
+            startActivity(new Intent(SignInActivity.this, AppsListActivity.class));
         }
     }
 
 
-    /**
-     * @param view informational button
-     */
-    public void onInformationClick(View view) {
+    @Override
+    public void onFailureResponse(Throwable throwable) {
 
-        InformationalDialog dialog = new InformationalDialog(SignInActivity.this);
-        dialog.show();
+        Toast.makeText(SignInActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show();
     }
 
 
-    private void getUserToken(String userNick, String password) {
-
-        UserTokenRequest user = new UserTokenRequest();
-        user.setUserNick(userNick);
-        user.setPassword(password);
-
-        ApiService apiService = retrofit.create(ApiService.class);
-
-        Call<UserTokenResponse> call = apiService.getUser(user);
-        call.enqueue(new Callback<UserTokenResponse>() {
-            @Override
-            public void onResponse(Call<UserTokenResponse> call, Response<UserTokenResponse> response) {
-
-                String token = response.body().getData();
-
-                if (token == null) {
-
-                    Toast.makeText(SignInActivity.this,
-                            getResources().getString(R.string.no_user), Toast.LENGTH_LONG).show();
-                } else {
-
-                    getSharedPreferences("Settings", MODE_PRIVATE).edit()
-                            .putString("userToken", token).apply();
-
-                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
-
-                    finish();
-                }
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<UserTokenResponse> call, Throwable t) {
-
-                Toast.makeText(SignInActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                progressDialog.dismiss();
-            }
-        });
-    }
-
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void onEditEmailListener() {
-
-        emailET.setOnTouchListener((v, event) -> {
-
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-
-                //disable the error in the input field
-                emailET.setBackground(getResources()
-                        .getDrawable(R.drawable.rounded_view_semi_transparent));
-
-                //delete input text button click
-                if (event.getRawX() >= (emailET.getRight() -
-                        emailET.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-
-                    emailET.setText("");
-
-                    return true;
-                }
-            }
-            return false;
-        });
-    }
-
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void onEditPasswordListener() {
-
-        passwordET.setOnTouchListener((v, event) -> {
-
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-
-                passwordET.setBackground(getResources()
-                        .getDrawable(R.drawable.rounded_view_semi_transparent));
-
-                if (event.getRawX() >= (passwordET.getRight() -
-                        passwordET.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-
-                    passwordET.setText("");
-
-                    return true;
-                }
-            }
-            return false;
-        });
+    @Override
+    protected void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
     }
 
 }

@@ -18,7 +18,7 @@
 
         <!--  -->
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name=".view.activity.AppsListActivity"
             android:label="Previewer"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeActionBar" />
