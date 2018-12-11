@@ -90,13 +90,13 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
 
 
     @Override
-    public void onEmailError() {
+    public void showEmailError() {
 
         emailEditText.setBackground(getResources().getDrawable(R.drawable.rounded_view_red));
     }
 
     @Override
-    public void onPasswordError() {
+    public void showPasswordError() {
 
         passwordEditText.setBackground(getResources().getDrawable(R.drawable.rounded_view_red));
     }

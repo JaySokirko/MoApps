@@ -8,6 +8,7 @@ public class SignInPresenter implements SignInContract.Presenter, SignInContract
     private SignInContract.View view;
     private SignInContract.Model model;
 
+
     public SignInPresenter(SignInContract.View view) {
         this.view = view;
         model = new ApiUserToken();
@@ -16,6 +17,7 @@ public class SignInPresenter implements SignInContract.Presenter, SignInContract
 
     @Override
     public void onDestroy() {
+
         this.view = null;
     }
 
@@ -26,10 +28,10 @@ public class SignInPresenter implements SignInContract.Presenter, SignInContract
         if (view != null) {
 
             if (email.isEmpty()) {
-                view.onEmailError();
+                view.showEmailError();
 
             } else if (password.length() < 6) {
-                view.onPasswordError();
+                view.showPasswordError();
 
             } else {
                 view.showProgress();

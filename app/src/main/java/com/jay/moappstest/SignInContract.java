@@ -9,9 +9,9 @@ public interface SignInContract {
 
         void hideProgress();
 
-        void onEmailError();
+        void showEmailError();
 
-        void onPasswordError();
+        void showPasswordError();
 
         void onSuccessResponse(String token);
 

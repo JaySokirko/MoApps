@@ -1,7 +1,5 @@
 package com.jay.moappstest.presenter;
 
-import android.util.Log;
-
 import com.jay.moappstest.AppListContract;
 import com.jay.moappstest.api.ApiUserAppList;
 

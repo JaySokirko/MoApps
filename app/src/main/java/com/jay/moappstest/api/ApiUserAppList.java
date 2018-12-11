@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class ApiUserAppList implements AppListContract.Model {
 
     private ArrayList<String> appImagesList = new ArrayList<>();
@@ -20,6 +21,7 @@ public class ApiUserAppList implements AppListContract.Model {
     private ArrayList<Date> datePaidList = new ArrayList<>();
     private ArrayList<Boolean> isCompleteList = new ArrayList<>();
     private ArrayList<String> urlsList = new ArrayList<>();
+
 
     @Override
     public void getUserAppList(onLoadFinishedListener listener, String token) {
@@ -35,6 +37,7 @@ public class ApiUserAppList implements AppListContract.Model {
         datePaidList.clear();
         isCompleteList.clear();
         urlsList.clear();
+
 
         ApiService apiService =
                 ApiClient.getClient().create(ApiService.class);

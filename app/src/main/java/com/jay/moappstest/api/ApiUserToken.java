@@ -8,8 +8,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ApiUserToken implements SignInContract.Model {
 
+public class ApiUserToken implements SignInContract.Model {
 
     @Override
     public void getToken(OnLoadFinishedListener onLoadFinishedListener, String email, String password) {
