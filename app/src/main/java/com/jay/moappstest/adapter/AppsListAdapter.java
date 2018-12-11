@@ -21,23 +21,23 @@ import java.util.Locale;
 public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<String> appImage;
-    private ArrayList<String> appName;
-    private ArrayList<Date> isPaid;
-    private ArrayList<Boolean> isComplete;
+    private ArrayList<String> appImagesList;
+    private ArrayList<String> appNamesList;
+    private ArrayList<Date> datePaidList;
+    private ArrayList<Boolean> isCompleteList;
 
     private OnItemClickListener callback;
 
     private String date = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
 
-    public AppsListAdapter(Context context, ArrayList<String> appImage, ArrayList<String> appName,
-                           ArrayList<Date> isPaid, ArrayList<Boolean> isComplete,
+    public AppsListAdapter(Context context, ArrayList<String> appImagesList, ArrayList<String> appNamesList,
+                           ArrayList<Date> datePaidList, ArrayList<Boolean> isCompleteList,
                            OnItemClickListener callback) {
         this.context = context;
-        this.appImage = appImage;
-        this.appName = appName;
-        this.isPaid = isPaid;
-        this.isComplete = isComplete;
+        this.appImagesList = appImagesList;
+        this.appNamesList = appNamesList;
+        this.datePaidList = datePaidList;
+        this.isCompleteList = isCompleteList;
         this.callback = callback;
     }
 
@@ -56,18 +56,18 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.appName.setText(appName.get(position));
+        holder.appName.setText(appNamesList.get(position));
 
-        Picasso.get().load(appImage.get(position)).into(holder.appIcon);
+        Picasso.get().load(appImagesList.get(position)).into(holder.appIcon);
 
-        if (isComplete.get(position)){
+        if (isCompleteList.get(position)){
 
             holder.complete.setText(context.getResources().getString(R.string.complete));
         } else {
             holder.complete.setText(context.getResources().getString(R.string.incomplete));
         }
 
-        if (isPaid.get(position) != null){
+        if (datePaidList.get(position) != null){
 
             holder.isCompleteImage.setImageResource(R.mipmap.icon_complete);
             holder.paid.setText(context.getResources().getString(R.string.paid_to) + date);
@@ -81,8 +81,9 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return appName.size();
+        return appNamesList.size();
     }
+
 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

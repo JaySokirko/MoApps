@@ -12,7 +12,7 @@ public class ApiUserToken implements SignInContract.Model {
 
 
     @Override
-    public void getToken(OnFinishedListener onFinishedListener, String email, String password) {
+    public void getToken(OnLoadFinishedListener onLoadFinishedListener, String email, String password) {
 
         UserTokenRequest user = new UserTokenRequest();
         user.setUserNick(email);
@@ -27,12 +27,12 @@ public class ApiUserToken implements SignInContract.Model {
             public void onResponse(Call<UserTokenResponse> call, Response<UserTokenResponse> response) {
 
                 String token = response.body().getData();
-                onFinishedListener.onFinished(token);
+                onLoadFinishedListener.onLoadFinished(token);
             }
 
             @Override
             public void onFailure(Call<UserTokenResponse> call, Throwable t) {
-                onFinishedListener.onFailure(t);
+                onLoadFinishedListener.onLoadFailure(t);
             }
         });
     }

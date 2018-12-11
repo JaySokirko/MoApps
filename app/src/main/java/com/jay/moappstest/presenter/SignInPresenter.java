@@ -3,7 +3,7 @@ package com.jay.moappstest.presenter;
 import com.jay.moappstest.SignInContract;
 import com.jay.moappstest.api.ApiUserToken;
 
-public class SignInPresenter implements SignInContract.Presenter, SignInContract.Model.OnFinishedListener{
+public class SignInPresenter implements SignInContract.Presenter, SignInContract.Model.OnLoadFinishedListener {
 
     private SignInContract.View view;
     private SignInContract.Model model;
@@ -40,7 +40,7 @@ public class SignInPresenter implements SignInContract.Presenter, SignInContract
 
 
     @Override
-    public void onFinished(String token) {
+    public void onLoadFinished(String token) {
 
         if (view != null) {
             view.hideProgress();
@@ -50,7 +50,7 @@ public class SignInPresenter implements SignInContract.Presenter, SignInContract
 
 
     @Override
-    public void onFailure(Throwable t) {
+    public void onLoadFailure(Throwable t) {
 
         if (view != null) {
             view.hideProgress();

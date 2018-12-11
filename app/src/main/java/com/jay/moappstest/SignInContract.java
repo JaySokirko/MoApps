@@ -2,6 +2,7 @@ package com.jay.moappstest;
 
 public interface SignInContract {
 
+
     interface View {
 
         void showProgress();
@@ -17,6 +18,7 @@ public interface SignInContract {
         void onFailureResponse(Throwable throwable);
     }
 
+
     interface Presenter{
 
         void onDestroy();
@@ -24,14 +26,16 @@ public interface SignInContract {
         void onSignInClick(String userNick, String password);
     }
 
+
     interface Model{
 
-        interface OnFinishedListener {
-            void onFinished(String token);
+        interface OnLoadFinishedListener {
 
-            void onFailure(Throwable t);
+            void onLoadFinished(String token);
+
+            void onLoadFailure(Throwable t);
         }
 
-        void getToken(OnFinishedListener onFinishedListener, String email, String password);
+        void getToken(OnLoadFinishedListener listener, String email, String password);
     }
 }
