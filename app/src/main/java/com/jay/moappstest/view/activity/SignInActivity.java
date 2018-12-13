@@ -12,12 +12,24 @@ import android.widget.Toast;
 
 import com.jay.moappstest.R;
 import com.jay.moappstest.SignInContract;
+
+import com.jay.moappstest.di.DaggerSignInComponent;
+import com.jay.moappstest.di.PresenterModule;
+import com.jay.moappstest.di.SharedPrefModule;
 import com.jay.moappstest.presenter.SignInPresenter;
+import com.jay.moappstest.utils.SharedPref;
 import com.jay.moappstest.view.dialog.InformationalDialog;
+
+import javax.inject.Inject;
+
 
 public class SignInActivity extends AppCompatActivity implements SignInContract.View{
 
-    private SignInPresenter presenter;
+    @Inject
+    public SignInPresenter presenter;
+
+    @Inject
+    SharedPref sharedPref;
 
     private EditText emailEditText;
     private EditText passwordEditText;
@@ -29,6 +41,7 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
 
     private final int DRAWABLE_RIGHT = 2;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +52,17 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
         loginButton = findViewById(R.id.sign_in);
         infoButton = findViewById(R.id.information);
 
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(SignInActivity.this);
         progressDialog.setTitle(getResources().getString(R.string.please_wait));
 
-        presenter = new SignInPresenter(this);
+        emailEditText.setText("sokirko0601@gmail.com");
+        passwordEditText.setText("123456");
+
+        DaggerSignInComponent.builder()
+                .presenterModule(new PresenterModule(this))
+                .sharedPrefModule(new SharedPrefModule(this))
+                .build()
+                .inject(this);
 
         onEditEmailListener();
 
@@ -52,6 +72,7 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
 
         onInfoBtnClickListener();
     }
+
 
     private void onLoginBtnClickListener() {
 
@@ -111,8 +132,7 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
                     .show();
         } else {
 
-            getSharedPreferences("Settings", MODE_PRIVATE).edit()
-                    .putString("userToken",token).apply();
+            sharedPref.putData("userToken", token);
 
             startActivity(new Intent(SignInActivity.this, AppsListActivity.class));
 

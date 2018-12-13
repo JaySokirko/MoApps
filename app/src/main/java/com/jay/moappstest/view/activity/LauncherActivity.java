@@ -5,18 +5,31 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.jay.moappstest.R;
+import com.jay.moappstest.di.DaggerLauncherComponent;
+import com.jay.moappstest.di.SharedPrefModule;
+import com.jay.moappstest.utils.SharedPref;
+
+import javax.inject.Inject;
 
 public class LauncherActivity extends AppCompatActivity {
+
+    @Inject
+    SharedPref sharedPref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
-        boolean isSignedIn = getSharedPreferences("Settings", MODE_PRIVATE)
-                .getBoolean("signIn",false);
+        DaggerLauncherComponent.builder()
+                .sharedPrefModule(new SharedPrefModule(this))
+                .build()
+                .inject(this);
 
-        if (isSignedIn){
+        boolean isSignedIn = sharedPref.getBooleanData("signIn");
+
+        if (isSignedIn) {
 
             startActivity(new Intent(LauncherActivity.this, AppsListActivity.class));
             finish();

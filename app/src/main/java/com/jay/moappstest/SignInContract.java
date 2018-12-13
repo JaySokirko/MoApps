@@ -2,7 +2,6 @@ package com.jay.moappstest;
 
 public interface SignInContract {
 
-
     interface View {
 
         void showProgress();

@@ -14,7 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ApiUserAppList implements AppListContract.Model {
+public class UserAppList implements AppListContract.Model {
 
     private ArrayList<String> appImagesList = new ArrayList<>();
     private ArrayList<String> appNamesList = new ArrayList<>();

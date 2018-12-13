@@ -4,12 +4,14 @@ import com.jay.moappstest.SignInContract;
 import com.jay.moappstest.model.request.UserTokenRequest;
 import com.jay.moappstest.model.response.UserTokenResponse;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ApiUserToken implements SignInContract.Model {
+public class UserToken implements SignInContract.Model {
 
     @Override
     public void getToken(OnLoadFinishedListener onLoadFinishedListener, String email, String password) {

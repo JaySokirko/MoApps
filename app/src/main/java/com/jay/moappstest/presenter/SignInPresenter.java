@@ -1,17 +1,21 @@
 package com.jay.moappstest.presenter;
 
 import com.jay.moappstest.SignInContract;
-import com.jay.moappstest.api.ApiUserToken;
+import com.jay.moappstest.api.UserToken;
+
+import javax.inject.Inject;
+
 
 public class SignInPresenter implements SignInContract.Presenter, SignInContract.Model.OnLoadFinishedListener {
 
     private SignInContract.View view;
-    private SignInContract.Model model;
+
+    private SignInContract.Model model = new UserToken();
 
 
-    public SignInPresenter(SignInContract.View view) {
+    @Inject
+    SignInPresenter(SignInContract.View view) {
         this.view = view;
-        model = new ApiUserToken();
     }
 
 
@@ -19,6 +23,7 @@ public class SignInPresenter implements SignInContract.Presenter, SignInContract
     public void onDestroy() {
 
         this.view = null;
+        this.model = null;
     }
 
 
