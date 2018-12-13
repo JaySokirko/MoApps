@@ -17,18 +17,18 @@
 
         <!--  -->
         <activity
-            android:name=".view.activity.AppsListActivity"
+            android:name="com.jay.moappstest.view.activity.AppsListActivity"
             android:label="Previewer"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeActionBar" />
 
         <!--  -->
         <activity
-            android:name=".view.activity.SignInActivity"
+            android:name="com.jay.moappstest.view.activity.SignInActivity"
             android:screenOrientation="portrait" />
 
       <!---->
-        <activity android:name=".view.activity.LauncherActivity"
+        <activity android:name="com.jay.moappstest.view.activity.LauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeActionBar">
             <intent-filter>

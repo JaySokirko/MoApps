@@ -15,17 +15,28 @@ import android.widget.Toast;
 import com.jay.moappstest.AppListContract;
 import com.jay.moappstest.R;
 import com.jay.moappstest.adapter.AppsListAdapter;
+import com.jay.moappstest.di.DaggerAppComponent;
+import com.jay.moappstest.di.PresenterModule;
+import com.jay.moappstest.di.SharedPrefModule;
 import com.jay.moappstest.presenter.AppListPresenter;
+import com.jay.moappstest.utils.SharedPref;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 public class AppsListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
         AppListContract.View, AppsListAdapter.OnItemClickListener {
 
-    private ProgressDialog progressDialog;
 
-    private AppListPresenter presenter;
+    @Inject
+    public AppListPresenter presenter;
+
+    @Inject
+    public SharedPref sharedPref;
+
+    private ProgressDialog progressDialog;
 
     private RecyclerView recyclerView;
 
@@ -47,14 +58,16 @@ public class AppsListActivity extends AppCompatActivity implements SwipeRefreshL
 
         setUpProgressDialog();
 
-        presenter = new AppListPresenter(this);
+        DaggerAppComponent.builder()
+                .sharedPrefModule(new SharedPrefModule(this))
+                .presenterModule(new PresenterModule(this))
+                .build()
+                .inject(this);
 
-        userToken = getSharedPreferences("Settings", MODE_PRIVATE)
-                .getString("userToken", "");
 
-        getSharedPreferences("Settings", MODE_PRIVATE).edit()
-                .putBoolean("signIn", true).apply();
+        sharedPref.putData("signIn", true);
 
+        userToken = sharedPref.getStringData("userToken");
 
         presenter.loadData(userToken);
     }
@@ -81,8 +94,7 @@ public class AppsListActivity extends AppCompatActivity implements SwipeRefreshL
 
             case R.id.log_out:
 
-                getSharedPreferences("Settings", MODE_PRIVATE).edit()
-                        .putBoolean("signIn", false).apply();
+                sharedPref.putData("signIn", false);
 
                 startActivity(new Intent(this, SignInActivity.class));
                 finish();

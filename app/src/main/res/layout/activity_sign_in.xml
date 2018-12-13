@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/background"
     android:orientation="vertical"
-    tools:context=".view.activity.SignInActivity">
+    tools:context="com.jay.moappstest.view.activity.SignInActivity">
 
 
     <ImageView

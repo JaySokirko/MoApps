@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.jay.moappstest.R;
 import com.jay.moappstest.SignInContract;
 
-import com.jay.moappstest.di.DaggerSignInComponent;
+import com.jay.moappstest.di.DaggerAppComponent;
 import com.jay.moappstest.di.PresenterModule;
 import com.jay.moappstest.di.SharedPrefModule;
 import com.jay.moappstest.presenter.SignInPresenter;
@@ -55,10 +55,7 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
         progressDialog = new ProgressDialog(SignInActivity.this);
         progressDialog.setTitle(getResources().getString(R.string.please_wait));
 
-        emailEditText.setText("sokirko0601@gmail.com");
-        passwordEditText.setText("123456");
-
-        DaggerSignInComponent.builder()
+        DaggerAppComponent.builder()
                 .presenterModule(new PresenterModule(this))
                 .sharedPrefModule(new SharedPrefModule(this))
                 .build()

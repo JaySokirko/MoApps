@@ -1,5 +1,6 @@
 package com.jay.moappstest.di;
 
+import com.jay.moappstest.AppListContract;
 import com.jay.moappstest.SignInContract;
 
 import dagger.Module;
@@ -8,14 +9,29 @@ import dagger.Provides;
 @Module
 public class PresenterModule {
 
-    private SignInContract.View view;
+    private SignInContract.View signInView;
 
-    public PresenterModule(SignInContract.View view) {
-        this.view = view;
+    private AppListContract.View appListView;
+
+
+    public PresenterModule(SignInContract.View signInView) {
+        this.signInView = signInView;
     }
+
+
+    public PresenterModule(AppListContract.View appListView) {
+        this.appListView = appListView;
+    }
+
 
     @Provides
     SignInContract.View provideSignInView(){
-        return view;
+        return signInView;
+    }
+
+
+    @Provides
+    AppListContract.View provideAppListView(){
+        return appListView;
     }
 }

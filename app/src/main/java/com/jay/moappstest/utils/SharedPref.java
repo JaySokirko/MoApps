@@ -24,4 +24,8 @@ public class SharedPref {
     public boolean getBooleanData(String key){
         return preferences.getBoolean(key, false);
     }
+
+    public String getStringData(String key){
+        return preferences.getString(key, "");
+    }
 }

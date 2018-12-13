@@ -6,17 +6,19 @@ import com.jay.moappstest.api.UserAppList;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 public class AppListPresenter implements AppListContract.Presenter,
         AppListContract.Model.onLoadFinishedListener {
 
 
     private AppListContract.View view;
-    private AppListContract.Model model;
+    private AppListContract.Model model = new UserAppList();
 
 
+    @Inject
     public AppListPresenter(AppListContract.View view) {
         this.view = view;
-        this.model = new UserAppList();
     }
 
 
