@@ -14,12 +14,14 @@ import android.widget.Toast;
 
 import com.jay.moappstest.AppListContract;
 import com.jay.moappstest.R;
-import com.jay.moappstest.adapter.AppsListAdapter;
+import com.jay.moappstest.model.adapter.AppsListAdapter;
 import com.jay.moappstest.di.DaggerAppComponent;
 import com.jay.moappstest.di.PresenterModule;
 import com.jay.moappstest.di.SharedPrefModule;
 import com.jay.moappstest.presenter.AppListPresenter;
+import com.jay.moappstest.utils.InternetConnection;
 import com.jay.moappstest.utils.SharedPref;
+import com.jay.moappstest.view.dialog.NoInternetConnectionDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,7 +120,12 @@ public class AppsListActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public void onRefresh() {
 
-        presenter.onSwipeRefreshLayout(userToken);
+        if (InternetConnection.isOnline(this)) {
+            presenter.onSwipeRefreshLayout(userToken);
+
+        } else {
+            NoInternetConnectionDialog.buildDialog(this);
+        }
     }
 
 

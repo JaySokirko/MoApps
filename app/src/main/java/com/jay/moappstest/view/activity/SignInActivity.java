@@ -17,8 +17,10 @@ import com.jay.moappstest.di.DaggerAppComponent;
 import com.jay.moappstest.di.PresenterModule;
 import com.jay.moappstest.di.SharedPrefModule;
 import com.jay.moappstest.presenter.SignInPresenter;
+import com.jay.moappstest.utils.InternetConnection;
 import com.jay.moappstest.utils.SharedPref;
 import com.jay.moappstest.view.dialog.InformationalDialog;
+import com.jay.moappstest.view.dialog.NoInternetConnectionDialog;
 
 import javax.inject.Inject;
 
@@ -78,7 +80,13 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
 
-            presenter.onSignInClick(email, password);
+            if (InternetConnection.isOnline(this)) {
+                presenter.onSignInClick(email, password);
+
+            } else {
+                NoInternetConnectionDialog.buildDialog(this);
+            }
+
         });
     }
 

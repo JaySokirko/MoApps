@@ -1,17 +1,14 @@
-package com.jay.moappstest.api;
+package com.jay.moappstest.model.network.api;
 
 import com.jay.moappstest.SignInContract;
-import com.jay.moappstest.model.request.UserTokenRequest;
-import com.jay.moappstest.model.response.UserTokenResponse;
-
-import javax.inject.Inject;
+import com.jay.moappstest.model.network.entity.request.UserTokenRequest;
+import com.jay.moappstest.model.network.entity.response.UserTokenResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class UserToken implements SignInContract.Model {
+public class ApiUserToken implements SignInContract.Model {
 
     @Override
     public void getToken(OnLoadFinishedListener onLoadFinishedListener, String email, String password) {
@@ -19,6 +16,7 @@ public class UserToken implements SignInContract.Model {
         UserTokenRequest user = new UserTokenRequest();
         user.setUserNick(email);
         user.setPassword(password);
+
 
         ApiService apiService =
                 ApiClient.getClient().create(ApiService.class);

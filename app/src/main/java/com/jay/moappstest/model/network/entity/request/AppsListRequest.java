@@ -1,4 +1,4 @@
-package com.jay.moappstest.model.request;
+package com.jay.moappstest.model.network.entity.request;
 
 public class AppsListRequest {
 

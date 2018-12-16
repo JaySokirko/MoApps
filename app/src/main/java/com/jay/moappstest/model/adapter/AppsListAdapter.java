@@ -1,4 +1,4 @@
-package com.jay.moappstest.adapter;
+package com.jay.moappstest.model.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

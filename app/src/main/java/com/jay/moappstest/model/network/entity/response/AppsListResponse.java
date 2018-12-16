@@ -1,4 +1,4 @@
-package com.jay.moappstest.model.response;
+package com.jay.moappstest.model.network.entity.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,9 +1,9 @@
-package com.jay.moappstest.api;
+package com.jay.moappstest.model.network.api;
 
 import com.jay.moappstest.AppListContract;
-import com.jay.moappstest.model.request.AppsListRequest;
-import com.jay.moappstest.model.response.AppsList;
-import com.jay.moappstest.model.response.AppsListResponse;
+import com.jay.moappstest.model.network.entity.request.AppsListRequest;
+import com.jay.moappstest.model.network.entity.response.AppsList;
+import com.jay.moappstest.model.network.entity.response.AppsListResponse;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class UserAppList implements AppListContract.Model {
+public class ApiUserAppList implements AppListContract.Model {
 
     private ArrayList<String> appImagesList = new ArrayList<>();
     private ArrayList<String> appNamesList = new ArrayList<>();

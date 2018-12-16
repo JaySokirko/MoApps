@@ -1,4 +1,4 @@
-package com.jay.moappstest.model.response;
+package com.jay.moappstest.model.network.entity.response;
 
 public class UserTokenResponse {
 

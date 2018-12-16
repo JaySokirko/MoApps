@@ -1,7 +1,7 @@
 package com.jay.moappstest.presenter;
 
 import com.jay.moappstest.AppListContract;
-import com.jay.moappstest.api.UserAppList;
+import com.jay.moappstest.model.network.api.ApiUserAppList;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +13,7 @@ public class AppListPresenter implements AppListContract.Presenter,
 
 
     private AppListContract.View view;
-    private AppListContract.Model model = new UserAppList();
+    private AppListContract.Model model = new ApiUserAppList();
 
 
     @Inject

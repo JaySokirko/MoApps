@@ -3,7 +3,7 @@ package com.jay.moappstest.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
-public class InternetCinnection {
+public class InternetConnection {
 
     /**
      * Checks if there is an internet connection.

@@ -1,7 +1,7 @@
 package com.jay.moappstest.presenter;
 
 import com.jay.moappstest.SignInContract;
-import com.jay.moappstest.api.UserToken;
+import com.jay.moappstest.model.network.api.ApiUserToken;
 
 import javax.inject.Inject;
 
@@ -10,7 +10,7 @@ public class SignInPresenter implements SignInContract.Presenter, SignInContract
 
     private SignInContract.View view;
 
-    private SignInContract.Model model = new UserToken();
+    private SignInContract.Model model = new ApiUserToken();
 
 
     @Inject
